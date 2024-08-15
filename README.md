@@ -14,29 +14,33 @@ The current state of the model demonstrates holding all assets in an S&P 500 ind
 - **Investment Simulation**: Apply the model to your invested capital to see potential yearly spending and asset performance.
 - **Visual Representation**: Charts at the bottom represent how your money would perform relative to the S&P 500, with red lines indicating when sales take place.
 
-## Usage
+## Code Description
 
-1. **Select Time Range**: Choose the historical time range for analysis.
-2. **Set Capital Gains Tax Bracket**: Select the appropriate capital gains tax bracket.
-3. **Input Capital**: Enter the amount of capital you have invested and currently hold.
-4. **Run Simulation**: The model will show how much money you could spend per year and the impact on your overall asset base.
-5. **Review Charts**: Analyze the charts to see the performance of your money relative to the S&P 500, with sales indicated by red lines.
+The `liquidate_portfolio` function simulates the liquidation of a portfolio over a specified number of years, taking into account capital gains tax and annual withdrawals. The function uses historical data from the S&P 500 index to model the portfolio's performance.
 
-## Example
+### Function: `liquidate_portfolio`
 
-Here is an example of how to use the model:
+#### Parameters:
+- `invested`: Initial amount of capital invested.
+- `value`: Current value of the portfolio.
+- `tax_rate`: Capital gains tax rate.
+- `year`: The starting year for the simulation.
+- `years`: The number of years over which the portfolio will be held after liquidation.
+- `ticker`: The stock ticker symbol for the S&P 500 index (e.g., `^SPX`).
 
-1. Input the total amount of capital invested ($1,000,000).
-2. Input the current value of assets (cash and securities) ($7,000,000).
-3. Set the capital gains tax bracket to 20% (0.2).
-4. Set the start year and amount of years held (1994, 30).
-5. Optional: input a ticker symbol for etf or stock (easiest to use an index as there is more historical data).
-6. Run the simulation to see performance of asset base and cash available for yearly expenses.
+#### Process:
+1. **Download Historical Data**: Fetches historical closing prices for the S&P 500 index from the specified start year to the current date.
+2. **Calculate Initial Asset Value**: Adjusts the portfolio value for capital gains tax.
+3. **Buy Shares**: Buys shares of the S&P 500 index at the beginning of the specified year.
+4. **Annual Liquidation**: Each year, sells a portion of the shares to cover expenses (3% of the asset value) and adjusts the remaining shares.
+5. **Store Results**: Records the dates and portfolio values after each annual liquidation.
+6. **Final Asset Value**: Calculates the final asset value at the end of the specified period.
 
-## Charts
+#### Output:
+- `dates`: List of dates when the portfolio value was recorded.
+- `values`: List of portfolio values corresponding to the recorded dates.
 
-The charts at the bottom of the model provide a visual representation of your money's performance relative to the S&P 500. The red lines indicate when sales take place for reference.
+### Example Usage
 
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug .
+```python
+dates, values = liquidate_portfolio(invested=1000000, value=7000000, tax_rate=0.2, year=1994, years=30, ticker='^SPX')
